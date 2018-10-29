@@ -10,12 +10,8 @@
 
 var expect = require('chai').expect;
 var ConvertHandler = require('../controllers/convertHandler.js');
-const helmet = require('helmet')
 
 module.exports = function (app) {
-
-  app.use(helmet())
-
   
   var convertHandler = new ConvertHandler();
 
