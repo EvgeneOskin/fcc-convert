@@ -8,23 +8,27 @@
 
 'use strict';
 
-var expect = require('chai').expect;
-var ConvertHandler = require('../controllers/convertHandler.js');
+const expect = require('chai').expect;
+const helmet = require('helmet')
+const ConvertHandler = require('../controllers/convertHandler.js');
 
 module.exports = function (app) {
+  app.use(helmet())
   
   var convertHandler = new ConvertHandler();
 
   app.route('/api/convert')
     .get(function (req, res){
-      var input = req.query.input;
-      var initNum = convertHandler.getNum(input);
-      var initUnit = convertHandler.getUnit(input);
-      var returnNum = convertHandler.convert(initNum, initUnit);
-      var returnUnit = convertHandler.getReturnUnit(initUnit);
-      var toString = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
+      const { input } = req.query;
+      const initNum = convertHandler.getNum(input);
+      const initUnit = convertHandler.getUnit(input);
+      const returnNum = convertHandler.convert(initNum, initUnit);
+      const returnUnit = convertHandler.getReturnUnit(initUnit);
+      const toString = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
       
-      //res.json
+      res.json({
+        initNum, initUnit, returnNum, returnUnit, string: toString
+      })
     });
     
 };
