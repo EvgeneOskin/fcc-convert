@@ -6,46 +6,65 @@
 *       
 */
 
+const returnUnitMapping = {
+  gal: 'L',
+  L: 'gal',
+  lbs: 'kg',
+  kg: 'lbs',
+  mi: 'km',
+  km: 'mi',
+}
+const spellingUnits = {
+  gal: 'gallon',
+  L: 'litre',
+  lbs: 'pound',
+  kg: 'kilogram',
+  mi: 'mile',
+  km: 'kilometer',
+}
+
+const galToL = 3.78541;
+const lbsToKg = 0.453592;
+const miToKm = 1.60934;
+const convertCoeficientMapping = {
+  gal: galToL,
+  L: 1/galToL,
+  lbs: lbsToKg,
+  kg: 1/lbsToKg,
+  mi: miToKm,
+  km: 1/miToKm,
+}
+
 class ConvertHandler {
-  
+
   getNum(input) {
     const [result] = input.split(/[a-zA-Z]/);
     return result;
   };
   
   getUnit(input) {
-    const result = input.replace(this.getUnit(input), '');
+    const result = input.replace(this.getNum(input), '');
     return result;
   };
   
   getReturnUnit(initUnit) {
-    var result;
-    const mapping = {
-      gal: 'L',
-      L: 'gal',
-      lbs: ' to 'kg' and vice versa. (1 lbs to 0.453592 kg)
-I can convert 'mi' to 'km'
+    const { [initUnit]: result = '' } = returnUnitMapping;
     return result;
   };
 
   spellOutUnit(unit) {
-    var result;
-    
+    const { [unit]: result = '' } = spellingUnits;
     return result;
   };
   
   convert(initNum, initUnit) {
-    const galToL = 3.78541;
-    const lbsToKg = 0.453592;
-    const miToKm = 1.60934;
-    var result;
+    var { [initUnit]: coeficient } = convertCoeficientMapping;
     
-    return result;
+    return (initNum * coeficient).toF;
   };
   
   getString(initNum, initUnit, returnNum, returnUnit) {
-    var result;
-    
+    const result = `${initNum} ${initUnit} converts to ${returnNum} ${returnUnit}`;
     return result;
   };
   
