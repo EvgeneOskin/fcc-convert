@@ -29,23 +29,27 @@ suite('Unit Tests', function(){
     });
     
     test('Fractional Input', function(done) {
-      
-      //done();
+      const input = '33/3L';
+      assert.equal(convertHandler.getNum(input), 11);
+      done();
     });
     
     test('Fractional Input w/ Decimal', function(done) {
-      
-      //done();
+      const input = '33.3/3L';
+      assert.equal(convertHandler.getNum(input), 11.1);
+      done();
     });
     
     test('Invalid Input (double fraction)', function(done) {
-      
-      //done();
+      const input = '33.3/3/3L';
+      assert.equal(convertHandler.getNum(input), 11.1);
+      done();
     });
     
     test('No Numerical Input', function(done) {
-      
-      //done();
+      const input = 'L';
+      assert.equal(convertHandler.getNum(input), 1);
+      done();
     }); 
     
   });

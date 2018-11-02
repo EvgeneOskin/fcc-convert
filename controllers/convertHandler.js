@@ -50,7 +50,7 @@ class ConvertHandler {
       const [_, numerator, denominator] = float
       return parseFloat(numerator) / parseFloat(denominator);
     } else {
-      return 1//'invalid number'
+      throw new Error('invalid number')
     }
   };
   
@@ -60,7 +60,10 @@ class ConvertHandler {
   };
   
   getReturnUnit(initUnit) {
-    const { [initUnit]: result = '' } = returnUnitMapping;
+    const { [initUnit]: result } = returnUnitMapping;
+    if (!result) {
+      throw new Error('invalid unit')
+    }
     return result;
   };
 
