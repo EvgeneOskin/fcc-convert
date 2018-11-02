@@ -38,8 +38,8 @@ const convertCoeficientMapping = {
 class ConvertHandler {
 
   getNum(input) {
-    const [result] = input.split(/[a-zA-Z]/);
-    return result;
+    const [result] = input.match(/\d+\.\d+/)
+    return parseFloat(result);
   };
   
   getUnit(input) {
