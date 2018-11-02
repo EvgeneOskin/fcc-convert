@@ -40,7 +40,7 @@ const floatRegexp = '[+-]?([0-9]*[.])?[0-9]+'
 class ConvertHandler {
 
   getNum(input) {
-    const float = input.match(new RegExp(floatRegexp))
+    const float = input.match(new RegExp(`^${floatRegexp}`))
     const fract = input.match(new RegExp(`(${floatRegexp})\/(${floatRegexp})`))
                               
     if (float) {
@@ -50,12 +50,12 @@ class ConvertHandler {
       const [_, numerator, denominator] = float
       return parseFloat(numerator) / parseFloat(denominator);
     } else {
-      return 'invalid number'
+      return 1//'invalid number'
     }
   };
   
   getUnit(input) {
-    const result = input.replace(this.getNum(input), '');
+    const [result] = input.match(/[a-zA-Z]+/)
     return result;
   };
   
@@ -76,7 +76,7 @@ class ConvertHandler {
   };
   
   getString(initNum, initUnit, returnNum, returnUnit) {
-    const result = `${initNum.toFixed(5)} ${this.spellOutUnit(initUnit)} converts to ${returnNum.toFixed(5)} ${this.spellOutUnit(returnUnit)}`;
+    const result = `${initNum} ${this.spellOutUnit(initUnit)} converts to ${returnNum.toFixed(5)} ${this.spellOutUnit(returnUnit)}`;
     return result;
   };
   

@@ -17,14 +17,15 @@ suite('Unit Tests', function(){
   suite('Function convertHandler.getNum(input)', function() {
     
     test('Whole number input', function(done) {
-      var input = '32L';
+      const input = '32L';
       assert.equal(convertHandler.getNum(input), 32);
       done();
     });
     
     test('Decimal Input', function(done) {
-      
-      //done();
+      const input = '32.3L';
+      assert.equal(convertHandler.getNum(input), 32.3);
+      done();
     });
     
     test('Fractional Input', function(done) {
