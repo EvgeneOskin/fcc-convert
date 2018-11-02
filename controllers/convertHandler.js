@@ -15,12 +15,12 @@ const returnUnitMapping = {
   km: 'mi',
 }
 const spellingUnits = {
-  gal: 'gallon',
-  L: 'litre',
-  lbs: 'pound',
-  kg: 'kilogram',
-  mi: 'mile',
-  km: 'kilometer',
+  gal: 'gallons',
+  L: 'litres',
+  lbs: 'pounds',
+  kg: 'kilograms',
+  mi: 'miles',
+  km: 'kilometers',
 }
 
 const galToL = 3.78541;
@@ -35,11 +35,23 @@ const convertCoeficientMapping = {
   km: 1/miToKm,
 }
 
+const floatRegexp = '[+-]?([0-9]*[.])?[0-9]+'
+
 class ConvertHandler {
 
   getNum(input) {
-    const [result] = input.match(/\d+\.\d+/)
-    return parseFloat(result);
+    const float = input.match(new RegExp(floatRegexp))
+    const fract = input.match(new RegExp(`(${floatRegexp})\/(${floatRegexp})`))
+                              
+    if (float) {
+      const [result] = float
+      return parseFloat(result);
+    } else if (fract) {
+      const [_, numerator, denominator] = float
+      return parseFloat(numerator) / parseFloat(denominator);
+    } else {
+      return 'invalid number'
+    }
   };
   
   getUnit(input) {
@@ -60,11 +72,11 @@ class ConvertHandler {
   convert(initNum, initUnit) {
     var { [initUnit]: coeficient } = convertCoeficientMapping;
     
-    return (initNum * coeficient).toFixed(5);
+    return initNum * coeficient;
   };
   
   getString(initNum, initUnit, returnNum, returnUnit) {
-    const result = `${initNum} ${initUnit} converts to ${returnNum} ${returnUnit}`;
+    const result = `${initNum.toFixed(5)} ${this.spellOutUnit(initUnit)} converts to ${returnNum.toFixed(5)} ${this.spellOutUnit(returnUnit)}`;
     return result;
   };
   
