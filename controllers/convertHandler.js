@@ -60,7 +60,7 @@ class ConvertHandler {
   convert(initNum, initUnit) {
     var { [initUnit]: coeficient } = convertCoeficientMapping;
     
-    return (initNum * coeficient).toF;
+    return (initNum * coeficient).toFixed(5);
   };
   
   getString(initNum, initUnit, returnNum, returnUnit) {
