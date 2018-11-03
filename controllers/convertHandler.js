@@ -35,20 +35,22 @@ const convertCoeficientMapping = {
   km: 1/miToKm,
 }
 
-const floatRegexp = '[+-]?([0-9]*[.])?[0-9]+'
+const floatRegexp = '[+-]?(?:[0-9]*[.])?[0-9]+'
 
 class ConvertHandler {
 
   getNum(input) {
-    const float = input.match(new RegExp(`^${floatRegexp}`))
+    const float = input.match(new RegExp(`^(${floatRegexp})`))
     const fract = input.match(new RegExp(`(${floatRegexp})\/(${floatRegexp})`))
-                              
-    if (float) {
-      const [result] = float
-      return parseFloat(result);
-    } else if (fract) {
+    
+    if (fract) {
       const [_, numerator, denominator] = float
-      return parseFloat(numerator) / parseFloat(denominator);
+      const result = Number(numerator) / Number(denominator);
+      console.log(result, Number(numerator) / Number(denominator), numerator), denominator))
+      return result 
+    } else if (float) {
+      const [_, result] = float
+      return Number(result);
     } else {
       throw new Error('invalid number')
     }
