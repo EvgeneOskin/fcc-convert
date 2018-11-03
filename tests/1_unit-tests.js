@@ -42,7 +42,12 @@ suite('Unit Tests', function(){
     
     test('Invalid Input (double fraction)', function(done) {
       const input = '33.3/3/3L';
-      assert.equal(convertHandler.getNum(input), 11.1);
+      try {
+        convertHandler.getNum(input)
+        assert.true(false)
+      } catch(e) {
+        assert.equal(e.message, 'invalid number')
+      }
       done();
     });
     
@@ -59,14 +64,19 @@ suite('Unit Tests', function(){
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
       input.forEach(function(ele) {
-        //assert
+        assert.equal(convertHandler.getUnit(`2${ele}`), ele)
       });
       done();
     });
     
     test('Unknown Unit Input', function(done) {
-      
-      //done();
+      try {
+        convertHandler.getUnit('12asda')
+        assert.true(false)
+      } catch(e) {
+        assert.equal(e.message, 'invalid unit')
+      }
+      done();
     });  
     
   });
@@ -87,7 +97,18 @@ suite('Unit Tests', function(){
   suite('Function convertHandler.spellOutUnit(unit)', function() {
     
     test('For Each Valid Unit Inputs', function(done) {
-      //see above example for hint
+      var input = ['gal','l','mi','km','lbs','kg'];
+      var expect = [
+        'gallons',
+        'liters',
+        'pounds',
+         'kilograms',
+        'miles',
+        'kilometers'
+      ];
+      input.forEach(function(ele, i) {
+        assert.equal(convertHandler.spellOutUnit(ele), expect[i]);
+      });
       done();
     });
     
@@ -110,23 +131,31 @@ suite('Unit Tests', function(){
     });
     
     test('Mi to Km', function(done) {
-      
-      //done();
+      var input = [2, 'mi'];
+      var expected = 3.21868;
+      assert.approximately(convertHandler.convert(input[0],input[1]),expected,0.1); //0.1 tolerance
+      done();
     });
     
     test('Km to Mi', function(done) {
-      
-      //done();
+      var input = [3.21868, 'km'];
+      var expected = 2;
+      assert.approximately(convertHandler.convert(input[0],input[1]),expected,0.1); //0.1 tolerance
+      done();
     });
     
     test('Lbs to Kg', function(done) {
-      
-      //done();
+      var input = [2, 'lbs'];
+      var expected = 0.907184;
+      assert.approximately(convertHandler.convert(input[0],input[1]),expected,0.1); //0.1 tolerance
+      done();
     });
     
     test('Kg to Lbs', function(done) {
-      
-      //done();
+      var input = [0.907184, 'kg'];
+      var expected = 2;
+      assert.approximately(convertHandler.convert(input[0],input[1]),expected,0.1); //0.1 tolerance
+      done();
     });
     
   });
