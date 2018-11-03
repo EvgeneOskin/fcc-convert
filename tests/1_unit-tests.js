@@ -102,7 +102,7 @@ suite('Unit Tests', function(){
         'gallons',
         'liters',
         'pounds',
-         'kilograms',
+        'kilograms',
         'miles',
         'kilometers'
       ];

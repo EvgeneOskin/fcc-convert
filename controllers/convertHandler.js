@@ -20,7 +20,7 @@ class ConvertHandler {
   };
   
   getReturnUnit(initUnit) {
-    const { [initUnit]: result } = returnUnitMapping;
+    const { [initUnit.toLowerCase()]: result } = returnUnitMapping;
     if (!result) {
       throw new Error('invalid unit')
     }
@@ -28,12 +28,12 @@ class ConvertHandler {
   };
 
   spellOutUnit(unit) {
-    const { [unit]: result = '' } = spellingUnits;
+    const { [unit.toLowerCase()]: result = '' } = spellingUnits;
     return result;
   };
   
   convert(initNum, initUnit) {
-    var { [initUnit]: coeficient } = convertCoeficientMapping;
+    var { [initUnit.toLowerCase()]: coeficient } = convertCoeficientMapping;
     
     return initNum * coeficient;
   };
@@ -75,37 +75,37 @@ const convertCoeficientMapping = {
 
 const floatRegexp = '[+-]?(?:[0-9]*[.])?[0-9]+'
 const numberRegExp = `(?:(${floatRegexp})\\/(${floatRegexp})|(${floatRegexp}))`
-const dimensions = Object.keys(convertCoeficientMapping).join('|')
-console.log(numberRegExp)
+const dimensions = [
+  ...Object.keys(convertCoeficientMapping),
+  ...Object.keys(convertCoeficientMapping).map(i => i.toLowerCase())
+].join('|')
 
-const parseNumberAndDimentions = input => {
-    const match = input.match(new RegExp(`^(?:${numberRegExp})?(${dimensions})$`))
-    console.log(match)
-  
-    if (match) {
-      const [_, numerator, denominator, num, dimension] = match
-      if (num) {
-        return [Number(num), dimension];
-      } else if (numerator && denominator) {
-        const result = Number(numerator) / Number(denominator);
-        return [result, dimension]
-      } else {
-        return [1, dimension]
-      }
+const parseNumberAndDimentions = rawInput => {
+  const match = input.match(new RegExp(`^(?:${numberRegExp})?(${dimensions})$`))
+
+  if (match) {
+    const [_, numerator, denominator, num, dimension] = match
+    if (num) {
+      return [Number(num), dimension];
+    } else if (numerator && denominator) {
+      const result = Number(numerator) / Number(denominator);
+      return [result, dimension]
     } else {
-      
-      const invalidDimension = input.match(new RegExp(`${dimensions}$`))
-      const invalidNumber = input.match(new RegExp(`^${numberRegExp}[a-zA-Z]+`))
-      console.log(invalidNumber, invalidNumber)
-      
-      if (!invalidDimension && !invalidNumber) {
-        throw new Error('invalid number and unit')
-      } else if (!invalidNumber) {
-        throw new Error('invalid number')
-      } else {
-        throw new Error('invalid unit')
-      }
+      return [1, dimension]
     }
+  } else {
+
+    const invalidDimension = input.match(new RegExp(`${dimensions}$`))
+    const invalidNumber = input.match(new RegExp(`^${numberRegExp}[a-zA-Z]+`))
+
+    if (!invalidDimension && !invalidNumber) {
+      throw new Error('invalid number and unit')
+    } else if (!invalidNumber) {
+      throw new Error('invalid number')
+    } else {
+      throw new Error('invalid unit')
+    }
+  }
 }
 
 module.exports = ConvertHandler;
