@@ -101,10 +101,10 @@ suite('Unit Tests', function(){
       var expect = [
         'gallons',
         'liters',
+        'miles',
+        'kilometers',
         'pounds',
         'kilograms',
-        'miles',
-        'kilometers'
       ];
       input.forEach(function(ele, i) {
         assert.equal(convertHandler.spellOutUnit(ele), expect[i]);
