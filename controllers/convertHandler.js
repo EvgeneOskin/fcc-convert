@@ -10,7 +10,8 @@
 class ConvertHandler {
 
   getNum(input) {
-
+    const [num] = parseNumberAndDimentions(input)
+    return num
   };
   
   getUnit(input) {
@@ -73,14 +74,15 @@ const convertCoeficientMapping = {
 }
 
 const floatRegexp = '[+-]?(?:[0-9]*[.])?[0-9]+'
+const numberRegExp = `(${floatRegexp})|(?:(${floatRegexp})\\/(${floatRegexp}))`
 const dimensions = Object.keys(convertCoeficientMapping).join('|')
+console.log(numberRegExp)
 
 const parseNumberAndDimentions = input => {
-    const float = input.match(new RegExp(`^(${floatRegexp})(dimensions)`))
-    const fract = input.match(new RegExp(`^(${floatRegexp})\/(${floatRegexp})(dimensions)`))
-    const dimensionMatch = input.match(new RegExp(dimensions))
-    
-    if (fract) {
+    const match = input.match(new RegExp(`^(?:numberRegExp)`)) //(dimensions)?`))
+    console.log(match)
+  
+    if (match) {
       const [_, numerator, denominator, dimension] = fract
       const result = Number(numerator) / Number(denominator);
       return [result, dimension]
