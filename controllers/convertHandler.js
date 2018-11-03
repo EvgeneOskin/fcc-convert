@@ -15,7 +15,7 @@ class ConvertHandler {
   };
   
   getUnit(input) {
-    const [result] = input.match(/[a-zA-Z]+/)
+    const [_, result ] = parseNumberAndDimentions(input)
     return result;
   };
   
@@ -74,26 +74,35 @@ const convertCoeficientMapping = {
 }
 
 const floatRegexp = '[+-]?(?:[0-9]*[.])?[0-9]+'
-const numberRegExp = `(${floatRegexp})|(?:(${floatRegexp})\\/(${floatRegexp}))`
+const numberRegExp = `(?:(${floatRegexp})\\/(${floatRegexp})|(${floatRegexp}))`
 const dimensions = Object.keys(convertCoeficientMapping).join('|')
 console.log(numberRegExp)
 
 const parseNumberAndDimentions = input => {
-    const match = input.match(new RegExp(`^(?:numberRegExp)`)) //(dimensions)?`))
+    const match = input.match(new RegExp(`^(?:${numberRegExp})?(${dimensions})$`))
     console.log(match)
   
     if (match) {
-      const [_, numerator, denominator, dimension] = fract
-      const result = Number(numerator) / Number(denominator);
-      return [result, dimension]
-    } else if (float) {
-      const [_, result, dimension] = float
-      return [Number(result), dimension];
-    } else if (dimensionMatch) {
-      const [_, dimension] = dimensionMatch
-      return [1, dimension]
+      const [_, numerator, denominator, num, dimension] = match
+      if (num) {
+        return [Number(num), dimension];
+      } else if (numerator && denominator) {
+        const result = Number(numerator) / Number(denominator);
+        return [result, dimension]
+      } else {
+        return [1, dimension]
+      }
     } else {
-      throw new Error('invalid number')
+      const invalidDimension = input.match(new RegExp(`(?!${dimensions})$`))
+      const invalidNumber = input.match(new RegExp(`^(?!${numberRegExp})`))
+      
+      if (invalidDimension && invalidNumber) {
+        throw new Error('invalid number and unit')
+      } else if (invalidNumber) {
+        throw new Error('invalid number')
+      } else {
+        throw new Error('invalid unit')
+      }
     }
 }
 
