@@ -16,7 +16,7 @@ const returnUnitMapping = {
 }
 const spellingUnits = {
   gal: 'gallons',
-  L: 'litres',
+  L: 'liters',
   lbs: 'pounds',
   kg: 'kilograms',
   mi: 'miles',
@@ -40,17 +40,18 @@ const floatRegexp = '[+-]?(?:[0-9]*[.])?[0-9]+'
 class ConvertHandler {
 
   getNum(input) {
-    const float = input.match(new RegExp(`^(${floatRegexp})`))
-    const fract = input.match(new RegExp(`(${floatRegexp})\/(${floatRegexp})`))
+    const float = input.match(new RegExp(`^(${floatRegexp})[a-zA-Z]+`))
+    const fract = input.match(new RegExp(`^(${floatRegexp})\/(${floatRegexp})[a-zA-Z]+`))
     
     if (fract) {
-      const [_, numerator, denominator] = float
+      const [_, numerator, denominator] = fract
       const result = Number(numerator) / Number(denominator);
-      console.log(result, Number(numerator) / Number(denominator), numerator), denominator))
       return result 
     } else if (float) {
       const [_, result] = float
       return Number(result);
+    } else if (input.match(/^[a-zA-Z]+/)) {
+      return 1
     } else {
       throw new Error('invalid number')
     }
