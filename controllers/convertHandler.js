@@ -76,6 +76,9 @@ const dimensions = [
   ...Object.keys(convertCoeficientMapping).map(i => i.toLowerCase()),
   ...Object.keys(convertCoeficientMapping).map(i => i.toUpperCase()),
 ].join('|')
+    
+console.log(dimensions) 
+
 
 const parseNumberAndDimentions = input => {
   const match = input.match(new RegExp(`^(?:${numberRegExp})?(${dimensions})$`))
@@ -91,13 +94,12 @@ const parseNumberAndDimentions = input => {
       return [1, dimension]
     }
   } else {
+    const validDimension = input.match(new RegExp(`(\d${dimensions}$)|(^${dimensions}$)`))
+    const validNumber = input.match(new RegExp(`^${numberRegExp}[a-zA-Z]+`))
 
-    const invalidDimension = input.match(new RegExp(`${dimensions}$`))
-    const invalidNumber = input.match(new RegExp(`^${numberRegExp}[a-zA-Z]+`))
-
-    if (!invalidDimension && !invalidNumber) {
+    if (!validDimension && !validNumber) {
       throw new Error('invalid number and unit')
-    } else if (!invalidNumber) {
+    } else if (!validNumber) {
       throw new Error('invalid number')
     } else {
       throw new Error('invalid unit')

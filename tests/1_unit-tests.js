@@ -71,7 +71,7 @@ suite('Unit Tests', function(){
     
     test('Unknown Unit Input', function(done) {
       try {
-        convertHandler.getUnit('12asda')
+        convertHandler.getUnit('3/7.2/4kilomegagram')
         assert.true(false)
       } catch(e) {
         assert.equal(e.message, 'invalid unit')
