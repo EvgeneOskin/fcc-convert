@@ -44,7 +44,7 @@ suite('Unit Tests', function(){
       const input = '33.3/3/3L';
       try {
         convertHandler.getNum(input)
-        assert.true(false)
+        assert.equal(false, true)
       } catch(e) {
         assert.equal(e.message, 'invalid number')
       }
@@ -71,8 +71,9 @@ suite('Unit Tests', function(){
     
     test('Unknown Unit Input', function(done) {
       try {
-        convertHandler.getUnit('3/7.2/4kilomegagram')
-        assert.true(false)
+        convertHandler.getUnit('12asda')
+        assert.equal(false, true)
+        done();
       } catch(e) {
         assert.equal(e.message, 'invalid unit')
       }

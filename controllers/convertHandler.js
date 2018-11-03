@@ -94,7 +94,7 @@ const parseNumberAndDimentions = input => {
       return [1, dimension]
     }
   } else {
-    const validDimension = input.match(new RegExp(`(\d${dimensions}$)|(^${dimensions}$)`))
+    const validDimension = input.match(new RegExp(`(\\d|^)(${dimensions})$`))
     const validNumber = input.match(new RegExp(`^${numberRegExp}[a-zA-Z]+`))
 
     if (!validDimension && !validNumber) {
