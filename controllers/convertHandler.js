@@ -93,12 +93,14 @@ const parseNumberAndDimentions = input => {
         return [1, dimension]
       }
     } else {
-      const invalidDimension = input.match(new RegExp(`(?!${dimensions})$`))
-      const invalidNumber = input.match(new RegExp(`^(?!${numberRegExp})`))
       
-      if (invalidDimension && invalidNumber) {
+      const invalidDimension = input.match(new RegExp(`${dimensions}$`))
+      const invalidNumber = input.match(new RegExp(`^${numberRegExp}[a-zA-Z]+`))
+      console.log(invalidNumber, invalidNumber)
+      
+      if (!invalidDimension && !invalidNumber) {
         throw new Error('invalid number and unit')
-      } else if (invalidNumber) {
+      } else if (!invalidNumber) {
         throw new Error('invalid number')
       } else {
         throw new Error('invalid unit')
